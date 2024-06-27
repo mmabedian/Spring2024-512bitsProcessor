@@ -1,7 +1,5 @@
 module RegisterFile (
     input clk,
-    input [1:0] reg_select,
-    input write_enable,
     output reg [511:0] A1, A2, A3, A4
 );
     reg [511:0] registers [3:0];
@@ -67,8 +65,6 @@ module Processor (
 
     RegisterFile rf (
         .clk(clk),
-        .reg_select(reg_select),
-        .write_enable(write_enable),
         .A1(A1),
         .A2(A2),
         .A3(A3),
@@ -150,8 +146,11 @@ module Processor_tb;
     end
 
     // Test sequence
-
     initial begin
+        $monitor("ALU Control %b, Multiply Control %b, Mem_to_reg_enable %b, Mem_to_reg %b\nmem_data_in %h", ALU_Control, control, mem_to_reg_enable, mem_to_reg, mem_data_in);
+    end
+    initial begin
+        $display("Transfer data to memory");
         // Write to memory
         mem_address = 9'h0;
         mem_data_in = 512'hFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF; // Example value
@@ -185,21 +184,22 @@ module Processor_tb;
         $display("A3 (Low Part of Multiplication Result): %h", A3);
         $display("A4 (High Part of Multiplication Result): %h", A4);
         ALU_Control = 0;
+        $display("Transfer data from A3 and A4 to memory");
         // read address 64 from memory
         mem_address = 9'h64;
         reg_select = 2'b10;
         mem_to_reg_enable = 1;
         mem_to_reg = 0;
         #20 mem_to_reg_enable = 0;
-        $display("Memory Data Out: %h", mem_data_out);
+        $display("Memory Data Out from address %h: %h", mem_address, mem_data_out);
         // read address 96 from memory
         mem_address = 9'h96;
         reg_select = 2'b11;
         mem_to_reg_enable = 1;
         mem_to_reg = 0;
         #20 mem_to_reg_enable = 0;
-        $display("Memory Data Out: %h", mem_data_out);
-
+        $display("Memory Data Out from address %h: %h", mem_address, mem_data_out);
         #10 $finish;
     end
+
 endmodule
