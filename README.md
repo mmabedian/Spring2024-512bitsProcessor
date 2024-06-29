@@ -39,7 +39,7 @@ This structured approach ensures that the processor can handle complex arithmeti
 To run the application, use a Verilog simulator such as ModelSim or Icarus Verilog or an FPGA development board to implement the design. The testbench provided can be used to simulate the processor's behavior and verify its functionality.
 
 1. Load the Verilog files into your simulation environment.
-2. Compile it then Run the simulation and observe the output (or you can use VSCode extensions to run it As I did myself).
+2. Compile it then Run the simulation and observe the output (or you can use VSCode extensions to run it As I did myself https://marketplace.visualstudio.com/items?itemName=itemName=leafvmaple.verilog).
 3. For hardware implementation, synthesize the design and upload it to an FPGA.
 
 ## Results
